@@ -134,7 +134,7 @@ public class CountdownFragment extends Fragment {
         mFragmentAdapter=new CountdownFragmentAdapter(getContext(),mHolidayItems);
         countdouwnList.addOnScrollListener(mOnScrollListener);
         manager=new LinearLayoutManager(getActivity());
-        mLayoutManager=new GridLayoutManager(getContext(),1);
+        mLayoutManager=new GridLayoutManager(getContext(),2);
         countdouwnList.setLayoutManager(mLayoutManager);
         countdouwnList.setAdapter(mFragmentAdapter);
     }
