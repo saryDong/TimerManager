@@ -72,7 +72,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.main_article:
                 fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
-                fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                if (mBottomNavigation.getSelectedItemId()!=R.id.main_article){
+                    fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                }
                 break;
             case R.id.artical_write:
                 Toast.makeText(this, "last fragment", Toast.LENGTH_SHORT).show();

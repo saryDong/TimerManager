@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -84,6 +85,7 @@ public class CountdownFragment extends Fragment {
     private CountdownFragmentAdapter mFragmentAdapter;
     private List<HolidayItem> mHolidayItems;
     private LinearLayoutManager manager;
+    private GridLayoutManager mLayoutManager;
 
     private int mScrollState = 0;
     private static final int SCROLL_UP = 1;
@@ -132,7 +134,8 @@ public class CountdownFragment extends Fragment {
         mFragmentAdapter=new CountdownFragmentAdapter(getContext(),mHolidayItems);
         countdouwnList.addOnScrollListener(mOnScrollListener);
         manager=new LinearLayoutManager(getActivity());
-        countdouwnList.setLayoutManager(manager);
+        mLayoutManager=new GridLayoutManager(getContext(),1);
+        countdouwnList.setLayoutManager(mLayoutManager);
         countdouwnList.setAdapter(mFragmentAdapter);
     }
 
