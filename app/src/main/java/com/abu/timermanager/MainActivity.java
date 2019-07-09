@@ -13,18 +13,14 @@ import android.widget.Toast;
 import com.abu.timermanager.event.ScrollEvent;
 import com.abu.timermanager.ui.activity.BaseActivity;
 import com.abu.timermanager.ui.fragment.CountdownFragment;
+import com.abu.timermanager.ui.fragment.MemoFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
-/**
- * @date: 2019/7/9 10:55
- * @author: 董长峰
- * @blog: https://www.jianshu.com/u/04a705fae99b
- * @description: 项目入口Activity, 搭建项目框架
- */
+
 public class MainActivity extends BaseActivity {
     @BindView(R.id.fragment_frame)
     FrameLayout mFragmentFrame;
@@ -68,6 +64,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (itemId) {
             case R.id.main_home:
+                fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
                 Toast.makeText(this, "first fragment", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.main_article:

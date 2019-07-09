@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <!--数据库名-->
+    <dbname value="TimerManager"/>
+    <!--版本号-->
+    <version value="1"/>
+    <!--表-->
+    <list>
+        <mapping class="com.abu.timermanager.bean.Memo"/>
+    </list>
+</litepal>
