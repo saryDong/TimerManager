@@ -1,7 +1,5 @@
 package com.abu.timermanager;
 
-
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +9,7 @@ import android.widget.Toast;
 
 import com.abu.timermanager.ui.activity.BaseActivity;
 import com.abu.timermanager.ui.fragment.CountdownFragment;
+import com.abu.timermanager.ui.fragment.MemoFragment;
 
 import butterknife.BindView;
 
@@ -54,8 +53,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (itemId) {
             case R.id.main_home:
-                Toast.makeText(this, "备忘录", Toast.LENGTH_SHORT).show();
-                fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
                 break;
             case R.id.main_article:
                 fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty"
+        android:text="暂无数据"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/lv_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"></ListView>
+
+    <ImageButton
+        android:id="@+id/ib_add_memo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp"
+        android:src="@drawable/add" />
+
+</RelativeLayout>
