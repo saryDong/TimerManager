@@ -16,13 +16,9 @@ import android.widget.TextView;
 import com.abu.timermanager.R;
 import com.abu.timermanager.bean.Memo;
 import com.abu.timermanager.ui.activity.AddMemoActivity;
-import com.abu.timermanager.ui.adapter.MemoAdapter;
+import com.abu.timermanager.adapter.MemoAdapter;
 import com.abu.timermanager.util.LitePalUtil;
-import com.abu.timermanager.util.LogUtil;
 
-import org.litepal.LitePal;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

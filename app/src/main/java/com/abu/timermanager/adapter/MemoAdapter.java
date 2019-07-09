@@ -1,4 +1,4 @@
-package com.abu.timermanager.ui.adapter;
+package com.abu.timermanager.adapter;
 
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
