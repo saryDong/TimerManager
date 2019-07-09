@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_home"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="备忘录"/>
+
+    <item
+        android:id="@+id/main_article"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="倒计时"/>
+
+    <item
+        android:id="@+id/artical_write"
+        android:title="日历"
+        android:icon="@drawable/ic_launcher_background"/>
+
+</menu>
