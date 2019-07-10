@@ -2,6 +2,7 @@ package com.abu.timermanager;
 
 
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import com.abu.timermanager.event.ScrollEvent;
 import com.abu.timermanager.ui.activity.BaseActivity;
 import com.abu.timermanager.ui.fragment.CountdownFragment;
 import com.abu.timermanager.ui.fragment.MemoFragment;
+import com.abu.timermanager.util.StatusBarUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +39,9 @@ public class MainActivity extends BaseActivity {
 
         //注册EventBus
         EventBus.getDefault().register(this);
+
+        //状态栏颜色
+        StatusBarUtil.setStatusBarColor(getWindow(), Color.rgb(61,50,66));
     }
 
     @Override
@@ -66,7 +71,6 @@ public class MainActivity extends BaseActivity {
         switch (itemId) {
             case R.id.main_home:
                 fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
-                Toast.makeText(this, "first fragment", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.main_article:
                 setStatusBarTransparent();

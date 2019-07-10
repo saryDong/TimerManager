@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#3d3242">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#3d3242"
+        android:elevation="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Timer Manager"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_empty"
-        android:text="暂无数据"
+        android:layout_below="@id/rl_title"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:text="暂无记录"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/lv_memo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"></ListView>
+        android:layout_below="@id/rl_title"
+        android:layout_marginHorizontal="20dp"
+        android:dividerHeight="10dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"></ListView>
 
     <ImageButton
         android:id="@+id/ib_add_memo"

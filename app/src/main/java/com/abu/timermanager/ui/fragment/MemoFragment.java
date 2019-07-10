@@ -1,10 +1,12 @@
 package com.abu.timermanager.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,11 @@ import com.abu.timermanager.R;
 import com.abu.timermanager.bean.Memo;
 import com.abu.timermanager.ui.activity.AddMemoActivity;
 import com.abu.timermanager.adapter.MemoAdapter;
+import com.abu.timermanager.ui.activity.MemoActivity;
 import com.abu.timermanager.util.LitePalUtil;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,6 +43,8 @@ public class MemoFragment extends Fragment {
     TextView tvEmpty;
     Unbinder unbinder;
 
+    private List<Memo> allMemo = new ArrayList<>();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,7 @@ public class MemoFragment extends Fragment {
      * 初始化
      */
     private void init() {
+        lvMemo.setEmptyView(tvEmpty);
         ibAddMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,27 +72,55 @@ public class MemoFragment extends Fragment {
         });
 
         //初始化数据
-        List<Memo> allMemo = LitePalUtil.findAllMemo();
+        allMemo.clear();
+        allMemo = LitePalUtil.findAllMemo();
         if (allMemo.size() != 0) {
             tvEmpty.setVisibility(View.GONE);
-            MemoAdapter adapter = new MemoAdapter(allMemo,getActivity());
+            final MemoAdapter adapter = new MemoAdapter(allMemo, getActivity());
             lvMemo.setAdapter(adapter);
+
+            //点击跳转
             lvMemo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    jump2MemoActivity();
+                    jump2MemoActivity(allMemo.get(position));
                 }
             });
-        }else {
-            tvEmpty.setVisibility(View.VISIBLE);
+
+            //长按删除
+            lvMemo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("提示");
+                    builder.setMessage("是否删除该条记录？");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Memo memo = allMemo.get(position);
+                            boolean b = LitePalUtil.deleteMemo(memo);
+                            if (b) {
+                                allMemo.remove(memo);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.setCancelable(false);
+                    builder.show();
+                    return true;
+                }
+            });
         }
     }
 
     /**
-     * 跳转到备忘录界面
+     * 主页备忘录list item点击事件，带数据跳转到备忘录界面
      */
-    private void jump2MemoActivity() {
-
+    private void jump2MemoActivity(Memo memo) {
+        Intent intent = new Intent(getContext(), MemoActivity.class);
+        intent.putExtra("memo", memo);
+        startActivity(intent);
     }
 
     /**

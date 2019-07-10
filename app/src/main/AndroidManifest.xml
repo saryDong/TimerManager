@@ -20,6 +20,9 @@
         <activity android:name=".ui.activity.AddMemoActivity">
 
         </activity>
+        <activity android:name=".ui.activity.MemoActivity">
+
+        </activity>
     </application>
 
 </manifest>
