@@ -1,4 +1,4 @@
-package com.abu.timermanager.data;
+package com.abu.timermanager.bean;
 
 /**
  * @date: 2019/7/9 11:36

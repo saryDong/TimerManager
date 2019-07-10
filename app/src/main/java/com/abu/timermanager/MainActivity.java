@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(this, "first fragment", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.main_article:
+                setStatusBarTransparent();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
                 if (mBottomNavigation.getSelectedItemId()!=R.id.main_article){
                     fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());

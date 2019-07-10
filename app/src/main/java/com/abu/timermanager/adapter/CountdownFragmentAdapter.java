@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.abu.timermanager.R;
-import com.abu.timermanager.data.HolidayItem;
+import com.abu.timermanager.bean.HolidayItem;
 
 import java.util.List;
 

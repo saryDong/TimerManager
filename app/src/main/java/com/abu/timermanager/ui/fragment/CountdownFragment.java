@@ -7,14 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.abu.timermanager.R;
 import com.abu.timermanager.adapter.CountdownFragmentAdapter;
-import com.abu.timermanager.data.HolidayItem;
+import com.abu.timermanager.bean.HolidayItem;
 import com.abu.timermanager.event.ScrollEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -84,7 +83,6 @@ public class CountdownFragment extends Fragment {
 
     private CountdownFragmentAdapter mFragmentAdapter;
     private List<HolidayItem> mHolidayItems;
-    private LinearLayoutManager manager;
     private GridLayoutManager mLayoutManager;
 
     private int mScrollState = 0;
@@ -133,8 +131,7 @@ public class CountdownFragment extends Fragment {
         }
         mFragmentAdapter=new CountdownFragmentAdapter(getContext(),mHolidayItems);
         countdouwnList.addOnScrollListener(mOnScrollListener);
-        manager=new LinearLayoutManager(getActivity());
-        mLayoutManager=new GridLayoutManager(getContext(),2);
+        mLayoutManager=new GridLayoutManager(getContext(),1);
         countdouwnList.setLayoutManager(mLayoutManager);
         countdouwnList.setAdapter(mFragmentAdapter);
     }
