@@ -38,6 +38,11 @@ dependencies {
     //组件间通信
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //网咯请求库
+    // Okhttp库
+    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
+    // Retrofit库
+    implementation 'com.squareup.retrofit2:retrofit:2.0.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

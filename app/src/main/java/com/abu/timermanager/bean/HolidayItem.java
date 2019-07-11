@@ -7,22 +7,23 @@ package com.abu.timermanager.bean;
  * @description:
  */
 public class HolidayItem {
-    private String holidayName;
-    private String holidayTime;
 
-    public String getHolidayName() {
-        return holidayName;
+    private String name;
+    private String startday;
+
+    public String getName() {
+        return name;
     }
 
-    public void setHolidayName(String holidayName) {
-        this.holidayName = holidayName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getHolidayTime() {
-        return holidayTime;
+    public String getStartday() {
+        return startday;
     }
 
-    public void setHolidayTime(String holidayTime) {
-        this.holidayTime = holidayTime;
+    public void setStartday(String startday) {
+        this.startday = startday;
     }
 }

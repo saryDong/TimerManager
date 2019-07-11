@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * @date: 2019/7/10 15:25
@@ -24,9 +25,23 @@ public class MultistageProgress extends View {
     private float weights[];//每个区域的权重
     private int colors[];//颜色
     private float totalWeight;//总的权重
+    public static final int DEF_COLORS[];//默认背景颜色数组
+    public static final float DEF_WEIGHTS[];//每段对应的权重
     private float progress = 10, maxProgress = 100;//进度和最大进度
     private OnProgressChangeListener listener;
 
+    static {
+        DEF_COLORS = new int[]{
+                Color.parseColor("#00B6D0"),
+                Color.parseColor("#0198AE"),
+                Color.parseColor("#008396"),
+                Color.parseColor("#007196"),
+                Color.parseColor("#005672")
+        };
+        DEF_WEIGHTS = new float[]{
+                138, 35, 230, 230, 57
+        };
+    }
 
     public float getProgress() {
         return progress;
@@ -103,10 +118,18 @@ public class MultistageProgress extends View {
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setColor(Color.parseColor("#e7eaf0"));
         linePaint.setStrokeWidth(2);
-       // setColors(DEF_COLORS, DEF_WEIGHTS);
+        setColors(DEF_COLORS, DEF_WEIGHTS);
 
     }
 
+    /**
+     * 设置进度条颜色
+     *
+     * @param color
+     */
+    public void setProgressColor(int color) {
+        progressPaint.setColor(color);
+    }
 
     /**
      * 设置每一段的颜色以及对应的权重
@@ -176,8 +199,54 @@ public class MultistageProgress extends View {
         return getWidth() * (weight / totalWeight) + 0.5f;
     }
 
+    /**
+     * 根据根据权重在数组中的索引获取对应的位置
+     *
+     * @param position
+     * @return
+     */
+    public float getXForWeightPosition(int position) {
+        float xPosition = 0;
+        for (int i = 0; i < position; i++) {
+            xPosition += getWidthForWeightPosition(i);
+        }
+        return xPosition;
+    }
+
+    /**
+     * 根据根据权重在数组中的索引获取对应的宽度
+     *
+     * @param position
+     * @return
+     */
+    public float getWidthForWeightPosition(int position) {
+        return getWidth() * (weights[position] / totalWeight) + 0.5f;
+    }
 
     ObjectAnimator valueAnimator;
+
+    public void autoChange(float startProgress, float endProgress, long changeTime) {
+        if (valueAnimator != null && valueAnimator.isRunning()) return;
+        setProgress((int) startProgress);
+        setMaxProgress((int) endProgress);
+        valueAnimator = ObjectAnimator.ofFloat(this, "progress", startProgress, endProgress);
+        valueAnimator.setDuration(changeTime);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+//                setProgress((int) value);
+                Log.d(getClass().getName(), "进度值 " + value);
+            }
+        });
+        valueAnimator.start();
+    }
+
+    public void stopChange() {
+        if (valueAnimator != null && valueAnimator.isRunning()) valueAnimator.cancel();
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         if (valueAnimator != null && valueAnimator.isRunning()) {

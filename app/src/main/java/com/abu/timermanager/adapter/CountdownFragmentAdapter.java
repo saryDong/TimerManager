@@ -1,6 +1,8 @@
 package com.abu.timermanager.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.abu.timermanager.R;
 import com.abu.timermanager.bean.HolidayItem;
+import com.abu.timermanager.ui.activity.HolidayDetailActivity;
 import com.abu.timermanager.widget.MultistageProgress;
 
 import java.text.ParseException;
@@ -43,13 +46,13 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.holiday_time.setText(mHolidayItems.get(i).getHolidayTime());
-        viewHolder.holiday_name.setText(mHolidayItems.get(i).getHolidayName());
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+        viewHolder.holiday_time.setText(mHolidayItems.get(i).getName());
+        viewHolder.holiday_name.setText(mHolidayItems.get(i).getStartday());
         Date date1 = null;
         Date date2=null;
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(mHolidayItems.get(i).getHolidayTime()+" "+"00:00:00");
+            date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(mHolidayItems.get(i).getStartday()+" "+"00:00:00");
             date2 = new Date(System.currentTimeMillis());
         } catch (ParseException e) {
             e.printStackTrace();
@@ -65,6 +68,15 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
         float left=365-cur-ainm;
         //viewHolder.mProgressBar.setMaxProgress(365);
         //viewHolder.mProgressBar.setColors(new int[]{R.color.c1,R.color.c2,R.color.c3},new float[]{10,35,20});
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext, HolidayDetailActivity.class);
+                intent.putExtra("holiday_name",mHolidayItems.get(i).getName());
+                intent.putExtra("holiday_time",mHolidayItems.get(i).getStartday());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

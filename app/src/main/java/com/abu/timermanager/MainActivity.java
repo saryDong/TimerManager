@@ -70,20 +70,22 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (itemId) {
             case R.id.main_home:
+              //  fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
                 fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
                 break;
             case R.id.main_article:
-                setStatusBarTransparent();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
+             //   fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
                 if (mBottomNavigation.getSelectedItemId()!=R.id.main_article){
                     fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
                 }
                 break;
             case R.id.artical_write:
-                Toast.makeText(this, "last fragment", Toast.LENGTH_SHORT).show();
-                break;
+                if (mBottomNavigation.getSelectedItemId()!=R.id.artical_write){
+                    fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                }
             default:
         }
+        //setStatusBarTransparent();
         fragmentTransaction.commit();
     }
 
