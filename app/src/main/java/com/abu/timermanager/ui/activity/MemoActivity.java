@@ -37,6 +37,7 @@ public class MemoActivity extends BaseActivity {
     TextView tvHint;
     @BindView(R.id.tv_remind_time)
     TextView tvRemindTime;
+    //fafeng
     @BindView(R.id.rl_root)
     RelativeLayout rlRoot;
     @BindView(R.id.rl_root2)
