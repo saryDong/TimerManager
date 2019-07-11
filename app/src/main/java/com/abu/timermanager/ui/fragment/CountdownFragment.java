@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +14,29 @@ import android.view.ViewGroup;
 import com.abu.timermanager.R;
 import com.abu.timermanager.adapter.CountdownFragmentAdapter;
 import com.abu.timermanager.bean.HolidayItem;
+import com.abu.timermanager.data.HolidayInfoInterface;
 import com.abu.timermanager.event.ScrollEvent;
+import com.abu.timermanager.util.API;
+import com.abu.timermanager.util.Configer;
+import com.abu.timermanager.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * @date: 2019/7/9 10:55
@@ -34,58 +45,7 @@ import butterknife.ButterKnife;
  * @description: 节假日列表fragment
  */
 public class CountdownFragment extends Fragment {
-    String HOLIDAY_Msg = "{\n" +
-            "  \"reason\": \"Success\",\n" +
-            "  \"result\": {\n" +
-            "    \"data\": {\n" +
-            "      \"holidaylist\": \"[{\\\"name\\\":\\\"元旦\\\",\\\"startday\\\":\\\"2018-1-1\\\"},{\\\"name\\\":\\\"除夕\\\",\\\"startday\\\":\\\"2018-2-15\\\"},{\\\"name\\\":\\\"春节\\\",\\\"startday\\\":\\\"2018-2-16\\\"},{\\\"name\\\":\\\"清明节\\\",\\\"startday\\\":\\\"2018-4-5\\\"},{\\\"name\\\":\\\"劳动节\\\",\\\"startday\\\":\\\"2018-5-1\\\"},{\\\"name\\\":\\\"端午节\\\",\\\"startday\\\":\\\"2018-6-18\\\"},{\\\"name\\\":\\\"中秋节\\\",\\\"startday\\\":\\\"2018-9-24\\\"},{\\\"name\\\":\\\"国庆节\\\",\\\"startday\\\":\\\"2018-10-1\\\"}]\",\n" +
-            "      \"year\": \"2019\",\n" +
-            "      \"holiday_list\": [\n" +
-            "        {\n" +
-            "          \"name\": \"元旦\",\n" +
-            "          \"startday\": \"2019-1-1\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"除夕\",\n" +
-            "          \"startday\": \"2019-2-15\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"春节\",\n" +
-            "          \"startday\": \"2019-2-16\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"清明节\",\n" +
-            "          \"startday\": \"2019-4-5\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"劳动节\",\n" +
-            "          \"startday\": \"2019-5-1\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"端午节\",\n" +
-            "          \"startday\": \"2019-6-18\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"中秋节\",\n" +
-            "          \"startday\": \"2019-9-24\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"国庆节\",\n" +
-            "          \"startday\": \"2019-10-1\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"国庆节\",\n" +
-            "          \"startday\": \"2019-10-1\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"name\": \"国庆节\",\n" +
-            "          \"startday\": \"2019-10-1\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    }\n" +
-            "  },\n" +
-            "  \"error_code\": 0\n" +
-            "}";
+
     @BindView(R.id.countdouwn_list)
     RecyclerView countdouwnList;
 
@@ -121,27 +81,60 @@ public class CountdownFragment extends Fragment {
     }
 
     private void initData() {
-        mHolidayItems=new ArrayList<>();
+        String result=SPUtils.getStringFromSP(Configer.HOLIDAY_INFO_LIST, null);
+        String  SavedYear=SPUtils.getStringFromSP(Configer.HOLIDAY_YEAR,null);
+        Date  date=new Date(System.currentTimeMillis());
+        String year=String.format("%tY", date);
+        if (year.equals(SavedYear)&&result!=null){
+            parse(result);
+        }else {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(API.HOLIIDAY_INFO_ROOT)
+                    .build();
 
+            HolidayInfoInterface service = retrofit.create(HolidayInfoInterface.class);
+            Call<ResponseBody> net_result=service.getHolidayInfo(year);
+            net_result.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                       parse(response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private void parse(String result) {
+        mHolidayItems=new ArrayList<>();
         try {
-            JSONObject object=new JSONObject(HOLIDAY_Msg);
+            JSONObject object=new JSONObject(result);
             JSONObject object1=object.getJSONObject("result");
             JSONObject object2=object1.getJSONObject("data");
             JSONArray array=object2.optJSONArray("holiday_list");
             for (int i=0;i<array.length();i++){
                 HolidayItem holidayItem=new HolidayItem();
-                holidayItem.setHolidayName(array.getJSONObject(i).getString("name"));
-                holidayItem.setHolidayTime(array.getJSONObject(i).getString("startday"));
+                holidayItem.setName(array.getJSONObject(i).getString("name"));
+                holidayItem.setStartday(array.getJSONObject(i).getString("startday"));
                 mHolidayItems.add(holidayItem);
             }
+            mFragmentAdapter=new CountdownFragmentAdapter(getContext(),mHolidayItems);
+            countdouwnList.addOnScrollListener(mOnScrollListener);
+            mLayoutManager=new GridLayoutManager(getContext(),1);
+            countdouwnList.setLayoutManager(mLayoutManager);
+            countdouwnList.setAdapter(mFragmentAdapter);
+            SPUtils.setString2SP(Configer.HOLIDAY_YEAR,object2.optString("year"));
+            SPUtils.setString2SP(Configer.HOLIDAY_INFO_LIST,result);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mFragmentAdapter=new CountdownFragmentAdapter(getContext(),mHolidayItems);
-        countdouwnList.addOnScrollListener(mOnScrollListener);
-        mLayoutManager=new GridLayoutManager(getContext(),1);
-        countdouwnList.setLayoutManager(mLayoutManager);
-        countdouwnList.setAdapter(mFragmentAdapter);
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {

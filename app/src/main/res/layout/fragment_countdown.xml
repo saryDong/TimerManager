@@ -14,7 +14,7 @@
         android:text="2019年节假日时间表"
         android:textSize="24sp"
         android:gravity="center_horizontal"
-        android:paddingTop="26dp"
+        android:paddingTop="25dp"
         android:paddingBottom="16dp"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"

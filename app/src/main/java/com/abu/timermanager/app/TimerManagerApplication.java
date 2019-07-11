@@ -6,7 +6,7 @@ import android.content.Context;
 import org.litepal.LitePal;
 
 public class TimerManagerApplication extends Application {
-
+    protected static Application instance;
     private static Context context;                 //上下文
 
     @Override
@@ -23,6 +23,7 @@ public class TimerManagerApplication extends Application {
         //初始化LitePal
         LitePal.initialize(this);
         context = getApplicationContext();
+        instance=this;
     }
 
     /**
@@ -31,5 +32,9 @@ public class TimerManagerApplication extends Application {
      */
     public static Context getContext(){
         return context;
+    }
+
+    public static Application getInstance() {
+        return instance;
     }
 }

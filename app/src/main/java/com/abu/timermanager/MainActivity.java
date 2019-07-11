@@ -1,11 +1,13 @@
 package com.abu.timermanager;
 
+
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -62,7 +64,6 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 切换页面
-     *
      * @param itemId 底部导航条菜单选项的id
      */
     private void switchPage(int itemId) {
@@ -78,8 +79,9 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.artical_write:
-                Toast.makeText(this, "last fragment", Toast.LENGTH_SHORT).show();
-                break;
+                if (mBottomNavigation.getSelectedItemId()!=R.id.artical_write){
+                    fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                }
             default:
         }
         fragmentTransaction.commit();
@@ -103,7 +105,7 @@ public class MainActivity extends BaseActivity {
         animationNavigationView(0, mBottomNavigation.getHeight());
     }
 
-    private void animationNavigationView(float from, float to) {
+    private void animationNavigationView(float from ,float to) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mBottomNavigation, "translationY",
                 from, to);
         objectAnimator.setDuration(500);
