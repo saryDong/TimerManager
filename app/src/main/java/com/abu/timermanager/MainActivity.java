@@ -1,13 +1,11 @@
 package com.abu.timermanager;
 
-
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -41,7 +39,7 @@ public class MainActivity extends BaseActivity {
         EventBus.getDefault().register(this);
 
         //状态栏颜色
-        StatusBarUtil.setStatusBarColor(getWindow(), Color.rgb(61,50,66));
+        StatusBarUtil.setStatusBarColor(getWindow(), Color.rgb(61, 50, 66));
     }
 
     @Override
@@ -64,6 +62,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 切换页面
+     *
      * @param itemId 底部导航条菜单选项的id
      */
     private void switchPage(int itemId) {
@@ -73,9 +72,8 @@ public class MainActivity extends BaseActivity {
                 fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
                 break;
             case R.id.main_article:
-                setStatusBarTransparent();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_right_in,R.anim.slide_left_out);
-                if (mBottomNavigation.getSelectedItemId()!=R.id.main_article){
+                fragmentTransaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out);
+                if (mBottomNavigation.getSelectedItemId() != R.id.main_article) {
                     fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
                 }
                 break;
@@ -105,7 +103,7 @@ public class MainActivity extends BaseActivity {
         animationNavigationView(0, mBottomNavigation.getHeight());
     }
 
-    private void animationNavigationView(float from ,float to) {
+    private void animationNavigationView(float from, float to) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mBottomNavigation, "translationY",
                 from, to);
         objectAnimator.setDuration(500);

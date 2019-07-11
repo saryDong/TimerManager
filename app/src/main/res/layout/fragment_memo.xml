@@ -18,6 +18,17 @@
             android:text="Timer Manager"
             android:textColor="#fff"
             android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/ib_add_memo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@null"
+            android:src="@drawable/add" />
+
     </RelativeLayout>
 
     <TextView
@@ -26,10 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
         android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
         android:text="暂无记录"
         android:textColor="#fff"
         android:textSize="15sp"
-        android:layout_marginTop="30dp"
         android:visibility="gone" />
 
     <ListView
@@ -38,19 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="55dp"
         android:dividerHeight="10dp"
         android:overScrollMode="never"
         android:scrollbars="none"></ListView>
-
-    <ImageButton
-        android:id="@+id/ib_add_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:background="@null"
-        android:paddingRight="20dp"
-        android:paddingBottom="20dp"
-        android:src="@drawable/add" />
 
 </RelativeLayout>

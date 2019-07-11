@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.abu.timermanager.R;
 import com.abu.timermanager.bean.Memo;
@@ -19,6 +21,7 @@ import com.abu.timermanager.util.LitePalUtil;
 import com.abu.timermanager.util.StatusBarUtil;
 import com.abu.timermanager.util.ToastUtil;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 
@@ -69,6 +72,12 @@ public class AddMemoActivity extends BaseActivity {
     ImageView ivSelected06;
     @BindView(R.id.rl_bg_06)
     RelativeLayout rlBg06;
+    @BindView(R.id.tv_remind_time)
+    TextView tvRemindTime;
+    @BindView(R.id.btn_modify_time)
+    Button btnModifyTime;
+    @BindView(R.id.rl_remind_time)
+    RelativeLayout rlRemindTime;
 
     private Date remindDate;                            //提醒时间
     private List<ImageView> ivs = new ArrayList<>();    //背景选择按钮集合
@@ -85,24 +94,12 @@ public class AddMemoActivity extends BaseActivity {
 
     @Override
     protected void init() {
+        initView();
+        initData();
+        initClickListener();
+    }
 
-        //导航栏颜色
-        StatusBarUtil.setStatusBarColor(getWindow(), Color.rgb(61, 50, 66));
-
-        //判断是否有传递过来的数据
-        Intent getIntent = getIntent();
-        if (getIntent != null) {
-            Memo memo = (Memo) getIntent.getSerializableExtra("memo");
-            if (memo != null) {
-                etContent.setText(memo.getContent());
-                etTitle.setText(memo.getTitle());
-                if (memo.getRemindTime() != null) {
-                    switchRemind.setChecked(true);
-                    remindDate = new Date(memo.getRemindTime());
-                }
-            }
-        }
-
+    private void initClickListener() {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,19 +117,19 @@ public class AddMemoActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     showTimeDialog();
+                    rlRemindTime.setVisibility(View.VISIBLE);
                 } else {
                     remindDate = null;
+                    rlRemindTime.setVisibility(View.GONE);
                 }
             }
         });
-
-        //将选择按钮添加到集合
-        ivs.add(ivSelected01);
-        ivs.add(ivSelected02);
-        ivs.add(ivSelected03);
-        ivs.add(ivSelected04);
-        ivs.add(ivSelected05);
-        ivs.add(ivSelected06);
+        btnModifyTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimeDialog();
+            }
+        });
         rlBg01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +168,37 @@ public class AddMemoActivity extends BaseActivity {
         });
     }
 
+    private void initData() {
+
+        //判断是否有数据传递过来
+        Intent getIntent = getIntent();
+        if (getIntent != null) {
+            Memo memo = (Memo) getIntent.getSerializableExtra("memo");
+            if (memo != null) {
+                etContent.setText(memo.getContent());
+                etTitle.setText(memo.getTitle());
+                if (memo.getRemindTime() != null) {
+                    switchRemind.setChecked(true);
+                    remindDate = new Date(memo.getRemindTime());
+                }
+            }
+        }
+
+        //将选择标记按钮添加到集合
+        ivs.add(ivSelected01);
+        ivs.add(ivSelected02);
+        ivs.add(ivSelected03);
+        ivs.add(ivSelected04);
+        ivs.add(ivSelected05);
+        ivs.add(ivSelected06);
+    }
+
+    private void initView() {
+
+        //导航栏颜色
+        StatusBarUtil.setStatusBarColor(getWindow(), Color.rgb(61, 50, 66));
+    }
+
     /**
      * 根据选择位置确定背景
      *
@@ -195,6 +223,17 @@ public class AddMemoActivity extends BaseActivity {
         }).setType(new boolean[]{true, true, true, true, true, true})       //年月日时分秒
                 .isDialog(true)                                             //以dialog形式显示
                 .setOutSideCancelable(false)                                //点击外部不能取消
+
+                //时间选择
+                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
+                    @Override
+                    public void onTimeSelectChanged(Date date) {
+                        if (rlRemindTime.getVisibility() != View.VISIBLE) {
+                            rlRemindTime.setVisibility(View.VISIBLE);
+                        }
+                        tvRemindTime.setText(DateUtil.date2String(date));
+                    }
+                })
                 .isCyclic(true).build();                                    //循环显示
         timePickerView.show();
     }
@@ -214,7 +253,7 @@ public class AddMemoActivity extends BaseActivity {
         memo.setCreateTime(DateUtil.getCurrentTime());
         memo.setTitle(title);
         if (remindDate != null) {
-            memo.setRemindTime(remindDate.toString());
+            memo.setRemindTime(DateUtil.date2String(remindDate));
         }
 
         //背景

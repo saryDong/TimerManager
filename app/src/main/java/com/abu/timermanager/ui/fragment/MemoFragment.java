@@ -22,7 +22,6 @@ import com.abu.timermanager.adapter.MemoAdapter;
 import com.abu.timermanager.ui.activity.MemoActivity;
 import com.abu.timermanager.util.LitePalUtil;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +43,7 @@ public class MemoFragment extends Fragment {
     Unbinder unbinder;
 
     private List<Memo> allMemo = new ArrayList<>();
+    private MemoAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +63,15 @@ public class MemoFragment extends Fragment {
      * 初始化
      */
     private void init() {
-        lvMemo.setEmptyView(tvEmpty);
+        initView();
+        initData();
+        initClickListener();
+    }
+
+    /**
+     * 初始化点击事件
+     */
+    private void initClickListener() {
         ibAddMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,47 +79,55 @@ public class MemoFragment extends Fragment {
             }
         });
 
-        //初始化数据
+        //item点击跳转
+        lvMemo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                jump2MemoActivity(allMemo.get(position));
+            }
+        });
+
+        //item长按删除
+        lvMemo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("提示");
+                builder.setMessage("是否删除该条记录？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Memo memo = allMemo.get(position);
+                        boolean b = LitePalUtil.deleteMemo(memo);
+                        if (b) {
+                            allMemo.remove(memo);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                builder.setNegativeButton("取消", null);
+                builder.setCancelable(false);
+                builder.show();
+                return true;
+            }
+        });
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
         allMemo.clear();
         allMemo = LitePalUtil.findAllMemo();
-        if (allMemo.size() != 0) {
-            tvEmpty.setVisibility(View.GONE);
-            final MemoAdapter adapter = new MemoAdapter(allMemo, getActivity());
-            lvMemo.setAdapter(adapter);
+        adapter = new MemoAdapter(allMemo, getActivity());
+        lvMemo.setAdapter(adapter);
+    }
 
-            //点击跳转
-            lvMemo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    jump2MemoActivity(allMemo.get(position));
-                }
-            });
-
-            //长按删除
-            lvMemo.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("提示");
-                    builder.setMessage("是否删除该条记录？");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Memo memo = allMemo.get(position);
-                            boolean b = LitePalUtil.deleteMemo(memo);
-                            if (b) {
-                                allMemo.remove(memo);
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    });
-                    builder.setNegativeButton("取消", null);
-                    builder.setCancelable(false);
-                    builder.show();
-                    return true;
-                }
-            });
-        }
+    /**
+     * 初始化视图
+     */
+    private void initView() {
+        lvMemo.setEmptyView(tvEmpty);
     }
 
     /**
@@ -141,5 +157,10 @@ public class MemoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+
+        //释放所有倒计时
+        if (adapter != null) {
+            adapter.cancelAllTimers();
+        }
     }
 }
