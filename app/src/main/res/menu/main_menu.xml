@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/main_home"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/memo"
         android:title="备忘录"/>
 
     <item
         android:id="@+id/main_article"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/holiday"
         android:title="节假日"/>
 
     <item
         android:id="@+id/artical_write"
         android:title="日历"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/calendar"/>
 
 </menu>
