@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/detail_bg"
     tools:context=".ui.activity.HolidayDetailActivity"
     android:background="@color/content"
     >
@@ -49,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:elevation="18dp"
+        android:elevation="10dp"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="24dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +70,8 @@
                 android:gravity="center"
                 android:padding="8dp"
                 android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/avoid"
@@ -78,7 +80,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="禁忌：破土.安葬.行丧.开生坟."
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/animalsYear"
@@ -87,7 +90,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="年份属相：马"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/desc"
@@ -96,7 +100,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="放假详情：1月1日至3日放假调休，共3天。1月4日（星期日）上班。"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/suit"
@@ -105,7 +110,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="适宜：\n\t\t\t订盟.纳采.造车器.祭祀.祈福.出行.安香.修造.动土.上梁.开市.交易.立券.移徙.入宅.会亲友.安机械.栽种.纳畜.造屋.起基.安床.造畜椆栖."
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/lunarYear"
@@ -114,7 +120,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="纪年：甲午年"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/lunar"
@@ -123,7 +130,8 @@
                 android:layout_margin="16dp"
                 android:contentDescription="农历：十一月十一"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/holiday_time"
@@ -133,7 +141,8 @@
                 android:layout_marginBottom="16dp"
                 android:contentDescription="禁忌：破土.安葬.行丧.开生坟."
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -143,7 +152,7 @@
         android:layout_height="0dp"
         android:layout_margin="32dp"
         android:layout_marginTop="8dp"
-        android:elevation="18dp"
+        android:elevation="10dp"
         android:orientation="vertical"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="24dp"
@@ -181,7 +190,8 @@
                 android:gravity="center"
                 android:text="距离假期：3月23天23时12分11秒"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp"
+                />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

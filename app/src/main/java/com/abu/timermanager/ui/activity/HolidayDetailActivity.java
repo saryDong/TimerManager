@@ -3,6 +3,8 @@ package com.abu.timermanager.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -58,6 +60,12 @@ public class HolidayDetailActivity extends BaseActivity {
     Date date1;
     @BindView(R.id.count_down_tv)
     TextView countDownTv;
+    @BindView(R.id.cardView)
+    CardView cardView;
+    @BindView(R.id.detail_bg)
+    ConstraintLayout detailBg;
+    @BindView(R.id.cardView2)
+    CardView cardView2;
 
 
     @Override
@@ -73,7 +81,33 @@ public class HolidayDetailActivity extends BaseActivity {
         if (intent != null) {
             String holiday_name = intent.getStringExtra("holiday_name");
             String holiday_time = intent.getStringExtra("holiday_time");
-
+            int radmon = intent.getIntExtra("bg_color", 1);
+            //手动选择背景
+            if (radmon == 1) {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_01);
+                cardView.setBackgroundResource(R.drawable.corners_bg_01);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_01);
+            } else if (radmon == 2) {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_02);
+                cardView.setBackgroundResource(R.drawable.corners_bg_02);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_02);
+            } else if (radmon == 3) {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_03);
+                cardView.setBackgroundResource(R.drawable.corners_bg_03);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_03);
+            } else if (radmon == 4) {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_04);
+                cardView.setBackgroundResource(R.drawable.corners_bg_04);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_04);
+            } else if (radmon == 5) {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_04);
+                cardView.setBackgroundResource(R.drawable.corners_bg_04);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_04);
+            } else {
+                detailBg.setBackgroundResource(R.drawable.corners_bg_06);
+                cardView.setBackgroundResource(R.drawable.corners_bg_06);
+                cardView2.setBackgroundResource(R.drawable.corners_bg_06);
+            }
             try {
                 date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(holiday_time + " " + "00:00:00");
                 now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date1);

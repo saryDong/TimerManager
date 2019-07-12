@@ -79,7 +79,7 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        int radmon= new Random().nextInt(6)+1;
+        final int radmon= new Random().nextInt(6)+1;
         //手动选择背景
         if (radmon == 1) {
             viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_01);
@@ -142,6 +142,7 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(mContext, HolidayDetailActivity.class);
+                intent.putExtra("bg_color",radmon);
                 intent.putExtra("holiday_name",mHolidayItems.get(i).getName());
                 intent.putExtra("holiday_time",mHolidayItems.get(i).getStartday());
                 mContext.startActivity(intent);
