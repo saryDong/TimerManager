@@ -1,6 +1,5 @@
 package com.abu.timermanager;
 
-
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
