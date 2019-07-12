@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
                 fragmentTransaction.replace(R.id.fragment_frame, new MemoFragment());
                 break;
             case R.id.main_article:
-                fragmentTransaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out);
+               // fragmentTransaction.setCustomAnimations(R.anim.slide_right_in, R.anim.slide_left_out);
                 if (mBottomNavigation.getSelectedItemId() != R.id.main_article) {
                     fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
                 }

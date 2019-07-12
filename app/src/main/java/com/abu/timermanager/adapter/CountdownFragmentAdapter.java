@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @date: 2019/7/9 10:55
@@ -77,6 +79,22 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        int radmon= new Random().nextInt(6)+1;
+        //手动选择背景
+        if (radmon == 1) {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_01);
+        } else if (radmon == 2) {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_02);
+        } else if (radmon == 3) {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_03);
+        } else if (radmon == 4) {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_04);
+        } else if (radmon == 5) {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_04);
+        } else {
+            viewHolder.bg_parent.setBackgroundResource(R.drawable.corners_bg_06);
+        }
+
         //viewHolder.distance_time.setText(getDatePoor(date1,date2));
         String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date1);
         //倒计时
@@ -140,11 +158,13 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
         TextView holiday_name;
         TextView holiday_time;
         TextView distance_time;
+        CardView bg_parent;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             holiday_name=itemView.findViewById(R.id.holiday_name);
             holiday_time=itemView.findViewById(R.id.holiday_time);
             distance_time=itemView.findViewById(R.id.distance_time);
+            bg_parent=itemView.findViewById(R.id.bg_parent);
         }
     }
 

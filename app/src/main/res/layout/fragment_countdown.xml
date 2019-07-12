@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black_0"
     tools:context=".ui.fragment.CountdownFragment">
 
     <TextView
@@ -16,7 +17,8 @@
         android:gravity="center_horizontal"
         android:paddingTop="25dp"
         android:paddingBottom="16dp"
-        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:background="@color/black_0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
