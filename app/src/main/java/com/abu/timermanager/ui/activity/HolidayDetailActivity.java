@@ -2,6 +2,7 @@ package com.abu.timermanager.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,11 +12,15 @@ import com.abu.timermanager.R;
 import com.abu.timermanager.bean.HolidayDetail;
 import com.abu.timermanager.data.HolidayInfoInterface;
 import com.abu.timermanager.util.API;
+import com.abu.timermanager.util.DateUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +54,12 @@ public class HolidayDetailActivity extends BaseActivity {
     @BindView(R.id.holiday_time)
     TextView holidayTime;
 
+    String now;
+    Date date1;
+    @BindView(R.id.count_down_tv)
+    TextView countDownTv;
+
+
     @Override
     public int getLayoutResId() {
         return R.layout.activity_holiday_detail;
@@ -62,10 +73,19 @@ public class HolidayDetailActivity extends BaseActivity {
         if (intent != null) {
             String holiday_name = intent.getStringExtra("holiday_name");
             String holiday_time = intent.getStringExtra("holiday_time");
+
+            try {
+                date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(holiday_time + " " + "00:00:00");
+                now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             initData(holiday_name, holiday_time);
-            if (holidayTime!=null){
-                holidayTime.setText("假日起始时间："+intent.getStringExtra("holiday_time"));
-            }else {
+
+            if (holidayTime != null) {
+                holidayTime.setText("假日起始时间：" + intent.getStringExtra("holiday_time"));
+            } else {
                 holidayTime.setVisibility(View.GONE);
             }
         }
@@ -110,50 +130,82 @@ public class HolidayDetailActivity extends BaseActivity {
             holidayDetail.setLunarYears(object2.getString("lunarYear"));
             holidayDetail.setLunar(object2.optString("lunar"));
 
-            if (!TextUtils.isEmpty(holidayDetail.getAnimalsYears())){
-                animalsYear.setText("年份属相："+holidayDetail.getAnimalsYears());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getAnimalsYears())) {
+                animalsYear.setText("年份属相：" + holidayDetail.getAnimalsYears());
+            } else {
                 animalsYear.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getAvoids())){
-                avoid.setText("禁忌："+holidayDetail.getAvoids());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getAvoids())) {
+                avoid.setText("禁忌：" + holidayDetail.getAvoids());
+            } else {
                 avoid.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getDes())){
-                desc.setText("假期安排："+holidayDetail.getDes());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getDes())) {
+                desc.setText("假期安排：" + holidayDetail.getDes());
+            } else {
                 desc.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getHoliday())){
+            if (!TextUtils.isEmpty(holidayDetail.getHoliday())) {
                 holidayName.setText(holidayDetail.getHoliday());
-            }else {
+            } else {
                 holidayName.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getLunarYears())){
-               lunarYear.setText("纪念："+holidayDetail.getLunarYears());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getLunarYears())) {
+                lunarYear.setText("纪念：" + holidayDetail.getLunarYears());
+            } else {
                 lunarYear.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getLunar())){
-                lunar.setText("农历："+holidayDetail.getLunar());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getLunar())) {
+                lunar.setText("农历：" + holidayDetail.getLunar());
+            } else {
                 lunar.setVisibility(View.GONE);
             }
-            if (!TextUtils.isEmpty(holidayDetail.getSuits())){
-               suit.setText("适宜："+holidayDetail.getSuits());
-            }else {
+            if (!TextUtils.isEmpty(holidayDetail.getSuits())) {
+                suit.setText("适宜：" + holidayDetail.getSuits());
+            } else {
                 suit.setVisibility(View.GONE);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        long l = DateUtil.computationTime(now);
+        CountDownTimer timer = new CountDownTimer(l, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                //以天数为单位取整
+                long day = millisUntilFinished / (1000 * 60 * 60 * 24);
+
+                //以小时为单位取整
+                long hour = (millisUntilFinished / (60 * 60 * 1000) - day * 24);
+
+                //以分钟为单位取整
+                long min = ((millisUntilFinished / (60 * 1000)) - day * 24 * 60 - hour * 60);
+
+                //秒
+                long second = (millisUntilFinished / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                countDownTv.setText(day + "天" + hour + "小时" + min + "分钟" + second + "秒");
+            }
+
+            @Override
+            public void onFinish() {
+                countDownTv.setText("已结束");
+            }
+        };
+        timer.start();
     }
 
     @OnClick(R.id.ib_back)
-    public void onclick(){
+    public void onclick() {
         onBackPressed();
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

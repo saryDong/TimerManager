@@ -170,4 +170,13 @@ public class CountdownFragment extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //释放所有倒计时
+        if (mFragmentAdapter != null) {
+            mFragmentAdapter.cancelAllTimers();
+        }
+    }
 }

@@ -3,9 +3,12 @@ package com.abu.timermanager.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,7 @@ import android.widget.TextView;
 import com.abu.timermanager.R;
 import com.abu.timermanager.bean.HolidayItem;
 import com.abu.timermanager.ui.activity.HolidayDetailActivity;
-import com.abu.timermanager.widget.MultistageProgress;
+import com.abu.timermanager.util.DateUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,10 +35,27 @@ import java.util.List;
 public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFragmentAdapter.ViewHolder> {
     private Context mContext;
     private List<HolidayItem> mHolidayItems;
+    private SparseArray<CountDownTimer> downTimerSparseArray;   //计时器集合，用于销毁计时器
 
     public CountdownFragmentAdapter(Context context, List<HolidayItem> holidayItems) {
         mContext = context;
         mHolidayItems = holidayItems;
+        this.downTimerSparseArray = new SparseArray<>();
+    }
+
+    /**
+     * 销毁所有计时器，避免内存溢出
+     */
+    public void cancelAllTimers() {
+        if (downTimerSparseArray == null) {
+            return;
+        }
+        for (int i = 0; i < downTimerSparseArray.size(); i++) {
+            CountDownTimer timer = downTimerSparseArray.get(i);
+            if (timer != null) {
+                timer.cancel();
+            }
+        }
     }
 
     @NonNull
@@ -46,9 +66,9 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        viewHolder.holiday_time.setText(mHolidayItems.get(i).getName());
-        viewHolder.holiday_name.setText(mHolidayItems.get(i).getStartday());
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+        viewHolder.holiday_time.setText(mHolidayItems.get(i).getStartday());
+        viewHolder.holiday_name.setText(mHolidayItems.get(i).getName());
         Date date1 = null;
         Date date2=null;
         try {
@@ -57,17 +77,49 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
         } catch (ParseException e) {
             e.printStackTrace();
         }
-       /* String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date1);
-        String later=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date2);*/
-        viewHolder.distance_time.setText(getDatePoor(date1,date2));
-        Date date =new Date();
-        //%tj表示一年中的第几天
-        String strDate =String.format("%tj",date);
-        float cur=Float.parseFloat(strDate);
-        float ainm=Float.parseFloat(String.format("%tj",date1));
-        float left=365-cur-ainm;
-        //viewHolder.mProgressBar.setMaxProgress(365);
-        //viewHolder.mProgressBar.setColors(new int[]{R.color.c1,R.color.c2,R.color.c3},new float[]{10,35,20});
+        //viewHolder.distance_time.setText(getDatePoor(date1,date2));
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date1);
+        //倒计时
+        if (!TextUtils.isEmpty(mHolidayItems.get(i).getStartday())) {
+            CountDownTimer timer = downTimerSparseArray.get(viewHolder.distance_time.hashCode());
+            if (timer != null) {
+
+                //将复用的倒计时清除
+                timer.cancel();
+            }
+            long time = DateUtil.computationTime(now);
+            if (time > 0) {
+                timer = new CountDownTimer(time, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                        //以天数为单位取整
+                        long day = millisUntilFinished / (1000 * 60 * 60 * 24);
+
+                        //以小时为单位取整
+                        long hour = (millisUntilFinished / (60 * 60 * 1000) - day * 24);
+
+                        //以分钟为单位取整
+                        long min = ((millisUntilFinished / (60 * 1000)) - day * 24 * 60 - hour * 60);
+
+                        //秒
+                        long second = (millisUntilFinished / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+                        viewHolder.distance_time.setText(day + "天" + hour + "小时" + min + "分钟" + second + "秒");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        viewHolder.distance_time.setText("已结束");
+                    }
+                }.start();
+            } else {
+                viewHolder.distance_time.setText("已结束");
+            }
+            downTimerSparseArray.put(viewHolder.distance_time.hashCode(), timer);
+        } else {
+            viewHolder.distance_time.setText("已结束");
+        }
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,13 +139,11 @@ public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFrag
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView holiday_name;
         TextView holiday_time;
-        MultistageProgress mProgressBar;
         TextView distance_time;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             holiday_name=itemView.findViewById(R.id.holiday_name);
             holiday_time=itemView.findViewById(R.id.holiday_time);
-            mProgressBar=itemView.findViewById(R.id.progressBar);
             distance_time=itemView.findViewById(R.id.distance_time);
         }
     }
