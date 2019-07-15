@@ -4,12 +4,28 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.abu.timermanager"
+
+//        applicationId rootProject.ext.android.applicationId
         minSdkVersion 25
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+        //TODO 极光推送
+        manifestPlaceholders = [
+                APP_NAME_VALUE: "${rootProject.ext.android.APP_NAME}",
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY  : "${rootProject.ext.android.APP_KEY}", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -47,4 +63,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //TODO 包添加的依赖
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'cn.jiguang.sdk:jpush:3.0.9'
+    implementation 'cn.jiguang.sdk:jcore:1.1.7'
+    implementation 'com.just.agentweb:agentweb:2.0.1'
+    implementation 'com.lzy.net:okgo:3.0.4'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
 }

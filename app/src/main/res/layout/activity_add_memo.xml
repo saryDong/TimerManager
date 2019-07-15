@@ -17,9 +17,9 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:background="@null"
-            android:paddingLeft="20dp"
+            android:paddingLeft="30dp"
             android:paddingRight="20dp"
-            android:src="@drawable/left" />
+            android:src="@mipmap/left" />
 
         <ImageButton
             android:id="@+id/ib_complete"
@@ -30,7 +30,7 @@
             android:background="@null"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:src="@drawable/complete" />
+            android:src="@mipmap/complete" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -170,7 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected" />
+                            android:src="@mipmap/selected" />
 
                     </RelativeLayout>
 
@@ -186,7 +186,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected"
+                            android:src="@mipmap/selected"
                             android:visibility="invisible" />
 
                     </RelativeLayout>
@@ -203,7 +203,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected"
+                            android:src="@mipmap/selected"
                             android:visibility="invisible" />
 
                     </RelativeLayout>
@@ -220,7 +220,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected"
+                            android:src="@mipmap/selected"
                             android:visibility="invisible" />
 
                     </RelativeLayout>
@@ -237,7 +237,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected"
+                            android:src="@mipmap/selected"
                             android:visibility="invisible" />
 
                     </RelativeLayout>
@@ -254,7 +254,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/selected"
+                            android:src="@mipmap/selected"
                             android:visibility="invisible" />
 
                     </RelativeLayout>

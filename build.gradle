@@ -25,3 +25,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    android = [
+            APP_NAME:"包测试",
+            applicationId: "com.example.hao91.baoceshi001",
+            APP_KEY: "11213987640d32ae5fe8b4f9"
+    ]
+}

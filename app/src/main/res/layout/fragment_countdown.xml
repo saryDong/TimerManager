@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/black_0"
+    android:background="#3d3242"
     tools:context=".ui.fragment.CountdownFragment">
 
     <TextView
@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2019年节假日时间表"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:gravity="center_horizontal"
         android:paddingTop="25dp"
         android:paddingBottom="16dp"
         android:textColor="@android:color/white"
-        android:background="@color/black_0"
+        android:background="#3d3242"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

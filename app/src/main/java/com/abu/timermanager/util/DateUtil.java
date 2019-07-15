@@ -2,6 +2,7 @@ package com.abu.timermanager.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -62,5 +63,26 @@ public class DateUtil {
         Date remindDate = DateUtil.string2Date(remindTime);
         long diff = remindDate.getTime() - currentDate.getTime();
         return diff;
+    }
+
+    /**
+     * 获取下一个小时
+     *
+     * @param time 当前时间
+     * @return 下一个小时时间
+     */
+    public static String getNextHour(String time) {
+        Date utilDate = null;
+        try {
+            utilDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(utilDate);
+        int hourOfDay = cl.get(Calendar.HOUR_OF_DAY);
+        cl.set(Calendar.HOUR_OF_DAY, hourOfDay + 1);
+        String nextHour = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cl.getTime());
+        return nextHour;
     }
 }

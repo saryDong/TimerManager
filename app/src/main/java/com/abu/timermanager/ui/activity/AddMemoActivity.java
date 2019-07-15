@@ -18,6 +18,7 @@ import com.abu.timermanager.R;
 import com.abu.timermanager.bean.Memo;
 import com.abu.timermanager.util.DateUtil;
 import com.abu.timermanager.util.LitePalUtil;
+import com.abu.timermanager.util.LogUtil;
 import com.abu.timermanager.util.StatusBarUtil;
 import com.abu.timermanager.util.ToastUtil;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -183,6 +184,14 @@ public class AddMemoActivity extends BaseActivity {
                 }
             }
 
+            //从日历跳转过来，自动将提醒时间设置为一个小时之后，根据需要修改
+            String remind = getIntent.getStringExtra("remind_date");
+            if (!TextUtils.isEmpty(remind)){
+                remindDate = DateUtil.string2Date(remind);
+                tvRemindTime.setText(remind);
+                switchRemind.setChecked(true);
+                rlRemindTime.setVisibility(View.VISIBLE);
+            }
         }
 
         //将选择标记按钮添加到集合

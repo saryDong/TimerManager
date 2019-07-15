@@ -9,18 +9,20 @@
         android:id="@+id/ib_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:background="@null"
         android:padding="20dp"
-        android:src="@drawable/left02" />
+        android:src="@mipmap/left" />
 
     <ImageButton
         android:id="@+id/ib_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="25dp"
         android:background="@null"
         android:padding="20dp"
-        android:src="@drawable/setting" />
+        android:src="@mipmap/setting" />
 
     <RelativeLayout
         android:id="@+id/rl_root2"

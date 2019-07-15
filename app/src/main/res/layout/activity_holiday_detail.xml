@@ -17,7 +17,7 @@
         android:layout_marginTop="25dp"
         android:background="@null"
         android:padding="20dp"
-        android:src="@drawable/left02"
+        android:src="@mipmap/left02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -34,6 +34,7 @@ import java.util.Random;
  * @blog: https://www.jianshu.com/u/04a705fae99b
  * @description:  节假日列表适配器
  */
+
 public class CountdownFragmentAdapter extends RecyclerView.Adapter<CountdownFragmentAdapter.ViewHolder> {
     private Context mContext;
     private List<HolidayItem> mHolidayItems;
