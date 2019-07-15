@@ -179,9 +179,10 @@ public class AddMemoActivity extends BaseActivity {
                 etTitle.setText(memo.getTitle());
                 if (memo.getRemindTime() != null) {
                     switchRemind.setChecked(true);
-                    remindDate = new Date(memo.getRemindTime());
+                    this.remindDate = new Date(memo.getRemindTime());
                 }
             }
+
         }
 
         //将选择标记按钮添加到集合

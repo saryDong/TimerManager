@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.abu.timermanager.event.ScrollEvent;
 import com.abu.timermanager.ui.activity.BaseActivity;
+import com.abu.timermanager.ui.fragment.CalendarFragment;
 import com.abu.timermanager.ui.fragment.CountdownFragment;
 import com.abu.timermanager.ui.fragment.MemoFragment;
 import com.abu.timermanager.util.StatusBarUtil;
@@ -79,7 +80,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.artical_write:
                 if (mBottomNavigation.getSelectedItemId()!=R.id.artical_write){
-                    fragmentTransaction.replace(R.id.fragment_frame, new CountdownFragment());
+                    fragmentTransaction.replace(R.id.fragment_frame, new CalendarFragment());
                 }
             default:
         }
