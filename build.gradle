@@ -28,8 +28,8 @@ task clean(type: Delete) {
 
 ext {
     android = [
-            APP_NAME:"包测试",
-            applicationId: "com.example.hao91.baoceshi001",
+            APP_NAME:"时间倒计时",
+            applicationId: "com.abu.timermanager",
             APP_KEY: "11213987640d32ae5fe8b4f9"
     ]
 }

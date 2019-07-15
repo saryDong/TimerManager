@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.abu.timermanager"
+//        applicationId "com.abu.timermanager"
 
-//        applicationId rootProject.ext.android.applicationId
-        minSdkVersion 25
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

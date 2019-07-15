@@ -30,6 +30,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigation;
 
+    public static CalendarFragment calendarFragment;
+
     @Override
     protected void init() {
         super.init();
@@ -80,7 +82,8 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.artical_write:
                 if (mBottomNavigation.getSelectedItemId()!=R.id.artical_write){
-                    fragmentTransaction.replace(R.id.fragment_frame, new CalendarFragment());
+                    calendarFragment = new CalendarFragment();
+                    fragmentTransaction.replace(R.id.fragment_frame,calendarFragment );
                 }
             default:
         }
