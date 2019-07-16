@@ -180,7 +180,11 @@ public class AddMemoActivity extends BaseActivity {
                 etTitle.setText(memo.getTitle());
                 if (memo.getRemindTime() != null) {
                     switchRemind.setChecked(true);
-                    this.remindDate = new Date(memo.getRemindTime());
+
+                    //使用new Date(memo.getRemindTime())新建对象报参数非法
+                    remindDate = DateUtil.string2Date(memo.getRemindTime());
+                    tvRemindTime.setText(memo.getRemindTime());
+                    rlRemindTime.setVisibility(View.VISIBLE);
                 }
             }
 

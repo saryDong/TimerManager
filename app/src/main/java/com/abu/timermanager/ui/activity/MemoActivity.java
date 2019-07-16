@@ -27,8 +27,8 @@ public class MemoActivity extends BaseActivity {
 
     @BindView(R.id.ib_back)
     ImageButton ibBack;
-    @BindView(R.id.ib_setting)
-    ImageButton ibSetting;
+//    @BindView(R.id.ib_setting)
+//    ImageButton ibSetting;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_create_time)
@@ -56,7 +56,7 @@ public class MemoActivity extends BaseActivity {
     }
 
     private void initClickListener() {
-        ibSetting.setOnClickListener(new View.OnClickListener() {
+        rlRoot2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog builder = new AlertDialog.Builder(MemoActivity.this)
