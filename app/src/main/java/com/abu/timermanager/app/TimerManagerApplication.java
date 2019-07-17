@@ -5,6 +5,8 @@ import android.content.Context;
 
 import org.litepal.LitePal;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class TimerManagerApplication extends Application {
     protected static Application instance;
     private static Context context;                 //上下文
@@ -19,6 +21,12 @@ public class TimerManagerApplication extends Application {
      * 初始化
      */
     private void init() {
+
+        try {
+            JPushInterface.init(this);
+        }catch (Exception e){
+
+        }
 
         //初始化LitePal
         LitePal.initialize(this);
