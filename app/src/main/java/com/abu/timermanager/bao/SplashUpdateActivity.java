@@ -36,6 +36,8 @@ import com.lzy.okgo.model.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+
 
 /**
  * Created by lenovo on 2019/2/20.
@@ -91,7 +93,7 @@ public class SplashUpdateActivity extends Activity {
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(this);
-        normalDialog.setIcon(R.mipmap.logo512);
+        normalDialog.setIcon(R.mipmap.logo);
         normalDialog.setTitle("通知");
         normalDialog.setMessage("尊敬的用户您好!为了您的用户体验,请手动打开推送通知");
         normalDialog.setPositiveButton("确定",
