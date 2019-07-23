@@ -63,7 +63,7 @@ public class LitePalUtil {
         ContentValues values = new ContentValues();
         values.put("title", memo.getTitle());
         values.put("content", memo.getContent());
-        values.put("bgColor",memo.getBgColor());
+        values.put("bgColor", memo.getBgColor());
         values.put("createTime", memo.getCreateTime());
         values.put("remindTime", memo.getRemindTime());
         int i = LitePal.updateAll(Memo.class, values, "content = ?", memo.getContent());
