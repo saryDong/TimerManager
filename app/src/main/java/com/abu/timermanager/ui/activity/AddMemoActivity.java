@@ -190,7 +190,7 @@ public class AddMemoActivity extends BaseActivity {
 
             //从日历跳转过来，自动将提醒时间设置为一个小时之后，根据需要修改
             String remind = getIntent.getStringExtra("remind_date");
-            if (!TextUtils.isEmpty(remind)){
+            if (!TextUtils.isEmpty(remind)) {
                 remindDate = DateUtil.string2Date(remind);
                 tvRemindTime.setText(remind);
                 switchRemind.setChecked(true);
@@ -277,6 +277,11 @@ public class AddMemoActivity extends BaseActivity {
             }
         }
         if (LitePalUtil.addMemo(memo)) {
+
+            //如果有修改，将修改后的memo传回MemoActivity
+            Intent intent = new Intent();
+            intent.putExtra("memo", memo);
+            setResult(RESULT_OK, intent);
             finish();
         } else {
             ToastUtil.showToast("编辑失败");

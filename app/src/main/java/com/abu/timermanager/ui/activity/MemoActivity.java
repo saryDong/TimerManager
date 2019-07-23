@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.abu.timermanager.R;
 import com.abu.timermanager.bean.Memo;
 import com.abu.timermanager.util.DateUtil;
 import com.abu.timermanager.util.LitePalUtil;
+import com.abu.timermanager.util.LogUtil;
 import com.abu.timermanager.util.StatusBarUtil;
 import com.abu.timermanager.util.ToastUtil;
 
@@ -27,7 +29,7 @@ public class MemoActivity extends BaseActivity {
 
     @BindView(R.id.ib_back)
     ImageButton ibBack;
-//    @BindView(R.id.ib_setting)
+    //    @BindView(R.id.ib_setting)
 //    ImageButton ibSetting;
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -46,12 +48,15 @@ public class MemoActivity extends BaseActivity {
     TextView tvContent;
 
     private Memo memo;
+    private CountDownTimer timer;
+    private Intent getIntent;
 
     @Override
     protected void init() {
         super.init();
+        getIntent = getIntent();
         initView();
-        initData();
+        initData(getIntent);
         initClickListener();
     }
 
@@ -95,9 +100,9 @@ public class MemoActivity extends BaseActivity {
         });
     }
 
-    private void initData() {
+    private void initData(Intent getIntent) {
         //判断是否数据传递过来
-        Intent getIntent = getIntent();
+//        Intent getIntent = getIntent();
         if (getIntent != null) {
             memo = (Memo) getIntent.getSerializableExtra("memo");
             tvCreateTime.setText(memo.getCreateTime());
@@ -121,7 +126,12 @@ public class MemoActivity extends BaseActivity {
                 tvCreateTime.setText(memo.getRemindTime());
                 tvHint.setText("还有");
                 long l = DateUtil.computationTime(memo.getRemindTime());
-                CountDownTimer timer = new CountDownTimer(l, 1000) {
+
+                //如果界面在onResume状态，timer没有取消，再次显示的该界面，timer不会更新
+                if (timer != null) {
+                    timer.cancel();
+                }
+                timer = new CountDownTimer(l, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
 
@@ -185,7 +195,27 @@ public class MemoActivity extends BaseActivity {
     private void jump2AddMemoActivity(Memo memo) {
         Intent intent = new Intent(MemoActivity.this, AddMemoActivity.class);
         intent.putExtra("memo", memo);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
+    }
+
+    /**
+     * 从详情界面到AddMemoActivity，修改后会返回到此界面更新数据
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    initData(data);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -196,5 +226,13 @@ public class MemoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 }

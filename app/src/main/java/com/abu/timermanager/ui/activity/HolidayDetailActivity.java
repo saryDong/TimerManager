@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.abu.timermanager.bean.HolidayDetail;
 import com.abu.timermanager.data.HolidayInfoInterface;
 import com.abu.timermanager.util.API;
 import com.abu.timermanager.util.DateUtil;
+import com.abu.timermanager.util.SPUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,7 +129,18 @@ public class HolidayDetailActivity extends BaseActivity {
     }
 
     private void initData(String holiday_name, String holiday_time) {
+        String result= SPUtils.getStringFromSP(holiday_time, null);
+        if (!TextUtils.isEmpty(result)){
+            Log.i("TAG",result+"old");
+            parse(result);
+        }else {
+            Log.i("TAG","new");
+            requestData(holiday_time);
+        }
 
+    }
+
+    public void requestData(final String holiday_time){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API.HOLIIDAY_INFO_ROOT)
                 .build();
@@ -137,7 +151,9 @@ public class HolidayDetailActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    parse(response.body().string());
+                    String result=response.body().string();
+                    parse(result);
+                    SPUtils.setString2SP(holiday_time, result);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
